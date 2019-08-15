@@ -21,6 +21,234 @@ npm 是随同Nodejs一起安装的包管理工具，能解决Nodejs代码部署�
 
 npm install module_name
 
+使用npm命令安装常用的node.js web框架模块express
+
+npm install express
+
+安装好之后，express包就放在工程目录下的node_modules目录中，因此在代码中
+只需要通过require("express")的方式就好，无需制定第三方包路径
+
+
+var express = require("express");
+
+全局安装于本地韩妆
+
+npm 的包安装分为本地安装(local),全局安装(golbal)两种，
+
+差别就在于有没有-g
+
+
+本地安装  npm install express
+全局安装  npm install express -g
+
+本地安装
+
+1. 将安装包在./node_modules下(运行npm命令时所在的目录)，
+如果没有node_modules目录，会在当前执行npm命令的目录下生成node_modules目录
+
+
+2. 全局安装
+
+1.将安装包放在/usr/local下或你node 的安装目录
+2. 可以直接在命令行里使用
+
+查看安装信息
+可以使用一下命令来查看所有全局安装的模块
+
+npm list -g
+
+如果要查看某个模块的版本号，  
+
+npm list grunt
+
+
+使用 package.json
+
+package.json 位于模块的目录下，用于定于包的属性。
+
+
+package.json
+
+name : 包名
+version:包的版本号
+description:包的描述
+homepage: 包的描述
+author:报的作者姓名
+contributors:包的其他贡献者姓名
+
+卸载模块
+
+npm uninstall express
+
+
+npm ls
+
+
+更新模块
+
+npm update express
+
+搜索模块
+
+npm search express
+
+创建模块，package.json是必不可少的。
+可以使用npm 生成 package.json文件，生成的文件包含了基本的结果
+
+npm init
+
+node.js REPL(交互式解释器)
+
+1.读取 读取用户输入，解析输入了javascript数据结构并存储在内存中
+2.执行 执行输入的数据结构
+3.打印  输出结果
+4. 循环， 循环操作以上步骤知道用户两次按下ctrl c 退出
+
+Node的交互式解释器可以很好的调试javascrt代码
+
+
+简单的表达式运算
+
+使用变量
+
+
+可以将数据存储在变量中，并在你需要的时候使用它
+
+变量声明需要使用var关键字，如果灭有使用var关键字变量会直接打印出来
+
+使用var关键字的变量可以使用console.log()来输出变量
+
+多行表达式
+
+node REPL支持输入多行表达式，这就类似于javascript.
+
+
+三个点的符号是系统自动生成的，回车换行后即可。
+Node会自动检测是否为连续的表达式
+
+下划线(_)变量
+
+可以使用下划线(_)获取上一个表达式的运算结果
+
+
+node.js回调函数
+
+
+Node.js异步编程的直接体现就是回调
+
+
+异步编程依托于回调来实现，但不能说使用了回调后程序就异步化了
+
+
+回调函数在完成任务后就会调用，Node使用了大量的回调函数，Node所有API都支持回调函数
+
+例如，可以额一遍读取文件，一边之心跟其他命令，在文件读取完成后，讲文件内容作为回调函数
+的参数返回。这样在执行代码时就没有阻塞或等待文件I/O操作。
+这就大大提高了node.js的性能，可以处理大量的并发请求。
+回调函数一般作为函数的最后一个参数出现
+
+
+function foo1(name,age,callback){}
+function foo2(value,callback1,callback2){}
+
+
+阻塞代码实例
+
+
+非阻塞代码实例
+
+非阻塞于阻塞的不同。第一个实例在文件读取完后才执行完程序。第二个实例
+我们不需要等待文件读取完，这样就可以读取文件时同事执行接下来的代码，
+大大提高了程序的性能
+
+阻塞是按顺序执行的，而非阻塞是不需要按顺序的，所以如果需要处理回调函数的参数，
+我们就需要写在回调函数内
+
+node.js事件循环
+
+node.js是单线程应用程序，v8引擎提供的异步执行回调接口，通过这些接口可以
+处理大量的并发，所以性能非常高
+
+node.js几乎每一个api都支持回调函数的
+node.js基本上所有的事件机制都是用设计模式中观察者模式实现的
+
+Node.js单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，
+每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数
+
+事件驱动程序
+
+node.js使用事件驱动模型，当web server接收到请求，就吧它关闭然后
+进行处理，然后去服务下一个web请求。
+当这个请求完成，它被放回处理队列，当到达队列开头，这个结果被返回给用户
+
+这个模型非常高效可扩展性非常强，因为webserver一直接受请求而不等待任何读写操作。
+（这也被称之为非阻塞式I/O或事件驱动I/O）
+
+在事件驱动模型中，会生成一个主循环来监听事件，当检测到事件时触发回调函数
+
+整个事件驱动的流程就是如下实现，类似于观察者模式，事件相当于一个主题(Subject),而
+所有注册到这个事件上的处理函数相当于观察者(observer)
+node.js有多个内置的事件，可以通过引入events模块，并通过实例化EventEmitter类
+来绑定和监听事件
+
+// 引入 events 模块
+
+var events = require("events");
+
+// 创建 eventEmitter对象
+
+var eventEmitter = new events.EventEmitter();
+
+
+// 绑定事件及事件的处理程序
+
+
+eventEmitter.on("eventName",eventHandler);
+
+
+//触发事件
+
+eventEmitter.emit("eventName");
+
+node 应用程序是如何工作的？
+
+在Node应用程序，执行异步操作的函数将回调函数作为最后一个参数，回调函数接收
+错误对象作为第一个参数
+
+
+
+fs.readFile()是异步函数用于读取文件。如果在读取文件过程中发生错误，错误err对象就
+会输出错误信息。
+如果没有发生错误，readFile跳过err对象的输出，文件内容就通过回调函数输出
+
+node.js EventEmitter
+
+Node.js 所有的异步I/O 操作在完成时都会发送一个事件到队列
+
+Node.js 里面的许多对象都会分发事件：一个net.Server对象会在每次有新连接时触发一个事件，一个fs.readStream
+对象会在文件被打开的时候触发一个事件。所有这些产生事件的对象都是events.EventEmitter的实例
+
+EventEmitter类
+
+Node.js Buffer(缓冲区)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
